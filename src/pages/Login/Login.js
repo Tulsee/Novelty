@@ -4,6 +4,7 @@ import { Formik, Form } from "formik";
 import { validate } from "../../utils/formValidation";
 import TextInput from "../../components/forms/TextInput";
 import { login } from "../../auth/login";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   return (
@@ -31,6 +32,12 @@ const Login = () => {
               <button className="btn btn-dark mt-3" type="submit">
                 Login
               </button>
+              <p className="mt-3">
+                New User?{" "}
+                <Link to="/register" className="text-danger">
+                  Click Here
+                </Link>{" "}
+              </p>
             </Form>
           </div>
         </div>

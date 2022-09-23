@@ -1,5 +1,6 @@
 import React from "react";
 import { Formik, Form } from "formik";
+import { Link } from "react-router-dom";
 
 import { validate } from "../../utils/formValidation";
 import TextInput from "../../components/forms/TextInput";
@@ -30,6 +31,12 @@ const Register = () => {
               <button className="btn btn-dark mt-3" type="submit">
                 Register
               </button>
+              <p className="mt-3">
+                Already have an account?{" "}
+                <Link to="/" className="text-danger">
+                  Click Here
+                </Link>{" "}
+              </p>
             </Form>
           </div>
         </div>

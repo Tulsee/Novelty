@@ -1,39 +1,73 @@
-import React, { Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const Header = () => {
-  return (
-    <Fragment>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container-fluid">
-          <Link className="navbar-brand" to="/">
-            Novelty
-          </Link>
+import { authHeader } from "../auth/authHeader";
+import { logout } from "../auth/login";
 
-          <div className="collapse navbar-collapse" id="navbarColor02">
-            <ul className="navbar-nav me-auto">
+const Header = () => {
+  const [authenticated, setAuthenticated] = useState(undefined);
+
+  useEffect(() => {
+    authHeader().then((data) => {
+      if (data.id) {
+        setAuthenticated(data);
+      }
+      console.log(data);
+    });
+  }, []);
+  const logOut = () => {
+    logout();
+  };
+  return (
+    <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
+      <div className="container">
+        <Link className="navbar-brand" to="/">
+          Novelty
+        </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#mobile-nav"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse " id="mobile-nav">
+          {authenticated && (
+            <ul className="navbar-nav">
               <li className="nav-item">
-                <Link className="nav-link active" to="/">
-                  Home
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/register">
-                  Register
+                <Link className="nav-link" to="/dashboard">
+                  {" "}
+                  Dashboard
                 </Link>
               </li>
             </ul>
-            <ul className="navbar-nav d-flex">
+          )}
+
+          {authenticated ? (
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item">
+                <a className="nav-link" href="/" onClick={logOut}>
+                  logout
+                </a>
+              </li>
+              <li className="nav-item">
+                <p className="nav-link">{authenticated.name}</p>
+              </li>
+            </ul>
+          ) : (
+            <ul className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link className="nav-link" to="/">
-                  Login User
+                  Login
                 </Link>
               </li>
             </ul>
-          </div>
+          )}
         </div>
-      </nav>
-    </Fragment>
+      </div>
+    </nav>
   );
 };
 
