@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Formik, Form } from "formik";
 
 import TextInput from "../forms/TextInput";
-import { validate } from "../../utils/formValidation";
+import { userUpdateValidate } from "../../utils/formValidation";
 import { updateUser } from "../../api/user";
+import { Toast } from "../ToastNotification";
 
-const PopupModel = ({ user }) => {
+const PopupModel = ({ user, isUpdated }) => {
   const [show, setShow] = useState(true);
   const handleClose = () => setShow(false);
   return (
@@ -22,29 +22,26 @@ const PopupModel = ({ user }) => {
               email: user.email,
               name: user.name,
             }}
-            validationSchema={validate}
+            validationSchema={userUpdateValidate}
             onSubmit={(value) => {
-              updateUser(user.id, value).then((res) => {
-                if (res) {
-                  console.log(res);
-                  handleClose();
-                }
+              updateUser(user._id, value).then((res) => {
+                Toast("success", "user has been updated");
+                setShow(false);
+                isUpdated(true);
               });
               console.log(value);
             }}
           >
-            {({ onSubmit }) => (
-              <Form onSubmit={onSubmit}>
-                <TextInput label="E-mail" name="email" type="email" />
-                <TextInput label="name" name="name" type="text" />
-                <hr />
-                <Button variant="dark" type="submit">
-                  Update
-                </Button>
-                <button className="btn btn-dark mt-3" type="submit">
-                  Login
-                </button>
-              </Form>
+            {(formik) => (
+              <div>
+                <Form className="card-body">
+                  <TextInput label="E-mail" name="email" type="email" />
+                  <TextInput label="name" name="name" type="text" />
+                  <button className="btn btn-dark mt-3" type="submit">
+                    Login
+                  </button>
+                </Form>
+              </div>
             )}
           </Formik>
         </Modal.Body>

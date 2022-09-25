@@ -20,18 +20,15 @@ const getUserList = async () => {
   });
 };
 
-// const getUserList = async () => {
-//   const data = await axios.get(baseUrl);
-//   if (data) return data;
-//   else {
-//     Toast("error", "Something went wrong");
-//   }
-// };
+const userDelete = async (id) => {
+  return await axios.delete(`${baseUrl}${id}`).then((res) => {
+    return res;
+  });
+};
 
 const updateUser = async (id, params) => {
-  const data = await axios.put(`${baseUrl}${id}`, { body: params });
+  const data = await axios.patch(`${baseUrl}${id}`, { params });
   if (data) {
-    Toast("succeess", "Successfully updated");
     return data;
   } else {
     Toast("error", "something went wrong");
@@ -39,4 +36,4 @@ const updateUser = async (id, params) => {
   }
 };
 
-export { getUserList, updateUser };
+export { getUserList, updateUser, userDelete };

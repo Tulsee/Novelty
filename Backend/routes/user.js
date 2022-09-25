@@ -75,21 +75,30 @@ router.get("/", (req, res) => {
     });
 });
 
-router.put("/:id", async (req, res) => {
-  const { name, email } = req.body;
+router.delete("/:id", (req, res) => {
+  let id = req.params.id;
+  User.findByIdAndDelete(id).then((data) => {
+    return res.status(200).json({ message: "User deleted successfully" });
+  });
+});
+
+router.patch("/:id", async (req, res) => {
+  const id = req.params.id;
+  const { name, email } = req.body.params;
   const updates = {};
+  const user = await User.findById(id);
   if (name !== undefined) {
     updates.name = name;
   }
   if (email !== undefined) {
     updates.email = email;
   }
-  const id = req.params.id;
-  const user = await User.findById(id);
   if (!user) {
     throw new Error("No user available");
   }
+  console.log(updates);
   const data = await User.findByIdAndUpdate(id, updates, { new: true });
+  console.log(data);
   return res.status(200).json(data);
 });
 

@@ -1,23 +1,32 @@
-import { render } from "@testing-library/react";
 import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 
-import { getUserList } from "../../api/user";
-import PopupModel from "../../components/popupModel";
+import { getUserList, userDelete } from "../../api/user";
 import { addIndex } from "../../utils";
+import PopupModel from "../../components/popupModel";
+import { render } from "@testing-library/react";
 
 const User = () => {
   const [users, setUsers] = useState([]);
-
+  const [updated, setUpdated] = useState(false);
+  const isUpdated = (data) => {
+    setUpdated(!updated);
+  };
   function handleShow(user) {
-    render(<PopupModel user={user} />);
+    render(<PopupModel user={user} isUpdated={isUpdated} />);
   }
+  function handleDelete(id) {
+    userDelete(id).then((res) => {
+      setUpdated(!updated);
+    });
+  }
+
   useEffect(() => {
     getUserList().then((res) => {
       console.log(res);
       setUsers(addIndex(res?.data));
     });
-  }, []);
+  }, [updated]);
   console.log(users);
   return (
     <div className="mr-3 mt-3">
@@ -47,6 +56,7 @@ const User = () => {
                 <Button
                   variant="danger"
                   className="rounded-full text-black border border-primary"
+                  onClick={() => handleDelete(user._id)}
                 >
                   Delete
                 </Button>

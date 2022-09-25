@@ -11,7 +11,7 @@ import UserList from "./pages/UserList";
 
 function App() {
   return (
-    <Router>
+    <div>
       <Header />
       <div className="container mt-3">
         <Routes>
@@ -24,7 +24,7 @@ function App() {
         </Routes>
         <ToastContainer />
       </div>
-    </Router>
+    </div>
   );
 }
 
