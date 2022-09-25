@@ -67,4 +67,30 @@ router.post("/register", (req, res) => {
   });
 });
 
+router.get("/", (req, res) => {
+  User.find()
+    .select("-password")
+    .then((data) => {
+      return res.status(200).json(data);
+    });
+});
+
+router.put("/:id", async (req, res) => {
+  const { name, email } = req.body;
+  const updates = {};
+  if (name !== undefined) {
+    updates.name = name;
+  }
+  if (email !== undefined) {
+    updates.email = email;
+  }
+  const id = req.params.id;
+  const user = await User.findById(id);
+  if (!user) {
+    throw new Error("No user available");
+  }
+  const data = await User.findByIdAndUpdate(id, updates, { new: true });
+  return res.status(200).json(data);
+});
+
 module.exports = router;

@@ -4,7 +4,6 @@ import { Toast } from "../components/ToastNotification";
 const baseUrl = "http://localhost:2000/api/v1/user/login";
 
 const login = (value) => {
-  console.log(value);
   axios
     .post(baseUrl, value)
     .then((res) => {
