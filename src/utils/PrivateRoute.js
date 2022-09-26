@@ -1,9 +1,10 @@
 import { Outlet, Navigate } from "react-router-dom";
 import { Toast } from "../components/ToastNotification";
+import { isAuthenticated } from "../auth/login";
 
 const PrivateRoute = () => {
-  let auth = { token: true };
-  return auth.token ? (
+  const auth = isAuthenticated();
+  return auth ? (
     <Outlet />
   ) : (
     (Toast("error", "You must login first"), (<Navigate to="/" />))

@@ -8,7 +8,6 @@ const User = require("../models/User");
 
 router.post("/login", (req, res) => {
   let { email, password } = req.body;
-  console.log(email);
   User.findOne({ email: email }).then((user) => {
     if (!user) {
       return res
@@ -60,7 +59,9 @@ router.post("/register", (req, res) => {
         bcrypt.hash(newUser.password, salt, (error, hash) => {
           newUser.password = hash;
           if (error) throw error;
-          newUser.save().then((user) => res.json(user));
+          newUser.save().then((user) => {
+            res.status(200).json(user);
+          });
         });
       });
     }
@@ -68,11 +69,19 @@ router.post("/register", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  User.find()
-    .select("-password")
-    .then((data) => {
-      return res.status(200).json(data);
-    });
+  const { search = "" } = req.query;
+  User.count({ $or: [{ name: { $regex: search } }] }, function (err, count) {
+    User.find({
+      $or: [{ name: { $regex: search } }],
+    })
+      .select("-password")
+      .then((users) => {
+        res.status(200).json({
+          users,
+          count,
+        });
+      });
+  });
 });
 
 router.delete("/:id", (req, res) => {
@@ -96,9 +105,7 @@ router.patch("/:id", async (req, res) => {
   if (!user) {
     throw new Error("No user available");
   }
-  console.log(updates);
   const data = await User.findByIdAndUpdate(id, updates, { new: true });
-  console.log(data);
   return res.status(200).json(data);
 });
 

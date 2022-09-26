@@ -12,7 +12,6 @@ const Header = () => {
       if (data.id) {
         setAuthenticated(data);
       }
-      console.log(data);
     });
   }, []);
   const logOut = () => {
@@ -42,6 +41,12 @@ const Header = () => {
                   Dashboard
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/user">
+                  {" "}
+                  User List
+                </Link>
+              </li>
             </ul>
           )}
 
@@ -59,7 +64,7 @@ const Header = () => {
           ) : (
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link className="nav-link" to="/">
+                <Link className="nav-link" to="/login">
                   Login
                 </Link>
               </li>

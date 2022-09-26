@@ -27,7 +27,7 @@ const PopupModel = ({ user, isUpdated }) => {
               updateUser(user._id, value).then((res) => {
                 Toast("success", "user has been updated");
                 setShow(false);
-                isUpdated(true);
+                isUpdated();
               });
               console.log(value);
             }}

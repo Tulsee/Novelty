@@ -3,21 +3,33 @@ import { Toast } from "../components/ToastNotification";
 
 const baseUrl = "http://localhost:2000/api/v1/user/";
 
-// const getUserList = async () => {
-//   return await axios
-//     .get(baseUrl)
-//     .then((data) => {
-//       if (data) return Promise.resolve(data);
-//     })
-//     .catch((err) => {
-//       return Promise.reject();
-//     });
-// };
+const userRegister = async (value) => {
+  return await axios
+    .post(`${baseUrl}register`, value)
+    .then((res) => {
+      if (res.data) {
+        Toast("success", "user register successfully");
+        return res;
+      }
+    })
+    .catch((err) => {
+      let error = err.response.data.error;
+      Toast("error", error);
+    });
+};
 
-const getUserList = async () => {
-  return await axios.get(baseUrl).then((res) => {
-    return res;
-  });
+const getUserList = async (search) => {
+  console.log("search", search);
+  return await axios
+    .get(baseUrl, {
+      params: {
+        search,
+      },
+    })
+    .then((res) => {
+      console.log(res);
+      return res.data;
+    });
 };
 
 const userDelete = async (id) => {
@@ -36,4 +48,4 @@ const updateUser = async (id, params) => {
   }
 };
 
-export { getUserList, updateUser, userDelete };
+export { getUserList, updateUser, userDelete, userRegister };

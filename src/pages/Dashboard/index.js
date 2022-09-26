@@ -7,7 +7,7 @@ import { stats, options, series, options1 } from "./data";
 
 const Dashboard = () => {
   return (
-    <Container fluid="true">
+    <Container className="container" fluid="true">
       <StatCard stats={stats} />
       <Graph options={options} series={series} options1={options1} />
     </Container>
